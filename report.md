@@ -3,7 +3,7 @@
 **Sinh viên:** Phan Danh Đạt  
 **MSSV:** 02627  
 **Track:** 4 — Deep Learning Advance  
-**Phần cứng thực nghiệm:** NVIDIA GeForce RTX 3060 12GB GDDR6 (Laptop / Desktop Local GPU, CUDA 12.1)  
+**Phần cứng thực nghiệm:** NVIDIA GeForce RTX 3060 12GB GDDR6 (Desktop Local GPU, CUDA 12.1)  
 **Môi trường:** Python 3.11.9, PyTorch 2.5.1+cu121, timm 1.0.15, Windows 11  
 
 ---
