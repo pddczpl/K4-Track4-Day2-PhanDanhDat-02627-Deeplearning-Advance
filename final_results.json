@@ -1,0 +1,80 @@
+[
+  {
+    "exp_id": "T00",
+    "backbone": "resnet50",
+    "seed": 0,
+    "best_epoch": 9,
+    "val_macro_f1": 0.8167003314915063,
+    "val_top1": 0.8668951728077692,
+    "val_ece": 0.016756995146153995,
+    "params_m": 23.526473,
+    "gmacs": 2.054741504,
+    "epoch_time_s": 48.89437381426493,
+    "latency_b1_ms": 9.81
+  },
+  {
+    "exp_id": "T00",
+    "backbone": "resnet50",
+    "seed": 1,
+    "best_epoch": 8,
+    "val_macro_f1": 0.7942770295834158,
+    "val_top1": 0.8477577834904313,
+    "val_ece": 0.02050250097875154,
+    "params_m": 23.526473,
+    "gmacs": 2.054741504,
+    "epoch_time_s": 44.72891706228256,
+    "latency_b1_ms": 3.88
+  },
+  {
+    "exp_id": "T00",
+    "backbone": "resnet50",
+    "seed": 2,
+    "best_epoch": 11,
+    "val_macro_f1": 0.8138563106040873,
+    "val_top1": 0.8626106826620965,
+    "val_ece": 0.013941375188097507,
+    "params_m": 23.526473,
+    "gmacs": 2.054741504,
+    "epoch_time_s": 45.18799501657486,
+    "latency_b1_ms": 9.1
+  },
+  {
+    "exp_id": "F01",
+    "backbone": "convnext_tiny",
+    "seed": 0,
+    "best_epoch": 10,
+    "val_macro_f1": 0.9664108444803587,
+    "val_top1": 0.9737217937732077,
+    "val_ece": 0.08074607041453473,
+    "params_m": 27.827049,
+    "gmacs": 2.234838144,
+    "epoch_time_s": 48.34376875559489,
+    "latency_b1_ms": 8.4
+  },
+  {
+    "exp_id": "F01",
+    "backbone": "convnext_tiny",
+    "seed": 1,
+    "best_epoch": 12,
+    "val_macro_f1": 0.9671250428325953,
+    "val_top1": 0.9740074264495858,
+    "val_ece": 0.0789472151401893,
+    "params_m": 27.827049,
+    "gmacs": 2.234838144,
+    "epoch_time_s": 49.338325122992195,
+    "latency_b1_ms": 9.31
+  },
+  {
+    "exp_id": "F01",
+    "backbone": "convnext_tiny",
+    "seed": 2,
+    "best_epoch": 11,
+    "val_macro_f1": 0.9639553914415777,
+    "val_top1": 0.9722936303913168,
+    "val_ece": 0.07880958283128002,
+    "params_m": 27.827049,
+    "gmacs": 2.234838144,
+    "epoch_time_s": 50.142521599928536,
+    "latency_b1_ms": 8.06
+  }
+]

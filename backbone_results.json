@@ -1,0 +1,93 @@
+[
+  {
+    "exp_id": "T00",
+    "backbone": "resnet50",
+    "seed": 0,
+    "best_epoch": 9,
+    "val_macro_f1": 0.8167003314915063,
+    "val_top1": 0.8668951728077692,
+    "val_ece": 0.016756995146153995,
+    "params_m": 23.526473,
+    "gmacs": 2.054741504,
+    "epoch_time_s": 48.89437381426493,
+    "latency_b1_ms": 9.81
+  },
+  {
+    "exp_id": "B02",
+    "backbone": "resnext50_32x4d",
+    "seed": 0,
+    "best_epoch": 11,
+    "val_macro_f1": 0.7924776892691408,
+    "val_top1": 0.8326192516423879,
+    "val_ece": 0.04058040995592391,
+    "params_m": 22.998345,
+    "gmacs": 2.12867584,
+    "epoch_time_s": 67.57544606924057,
+    "latency_b1_ms": 8.73
+  },
+  {
+    "exp_id": "B03",
+    "backbone": "convnext_tiny",
+    "seed": 0,
+    "best_epoch": 11,
+    "val_macro_f1": 0.9639598036165123,
+    "val_top1": 0.9731505284204514,
+    "val_ece": 0.019948833467483003,
+    "params_m": 27.827049,
+    "gmacs": 2.234838144,
+    "epoch_time_s": 50.638436675071716,
+    "latency_b1_ms": 4.25
+  },
+  {
+    "exp_id": "B04",
+    "backbone": "deit_small_patch16_224",
+    "seed": 0,
+    "best_epoch": 11,
+    "val_macro_f1": 0.9586493528697664,
+    "val_top1": 0.9688660382747787,
+    "val_ece": 0.015439442943348494,
+    "params_m": 21.669129,
+    "gmacs": 2.125147008,
+    "epoch_time_s": 37.062945226828255,
+    "latency_b1_ms": 3.36
+  },
+  {
+    "exp_id": "B05",
+    "backbone": "swin_tiny_patch4_window7_224",
+    "seed": 0,
+    "best_epoch": 10,
+    "val_macro_f1": 0.9538172568976157,
+    "val_top1": 0.9648671808054842,
+    "val_ece": 0.01933190013741945,
+    "params_m": 27.526275,
+    "gmacs": 2.254216704,
+    "epoch_time_s": 58.51282493273417,
+    "latency_b1_ms": 5.7
+  },
+  {
+    "exp_id": "B06",
+    "backbone": "efficientnet_b0",
+    "seed": 0,
+    "best_epoch": 11,
+    "val_macro_f1": 0.8195939922196251,
+    "val_top1": 0.8611825192802056,
+    "val_ece": 0.04545395241843328,
+    "params_m": 4.019077,
+    "gmacs": 0.199042192,
+    "epoch_time_s": 27.681248764197033,
+    "latency_b1_ms": 4.28
+  },
+  {
+    "exp_id": "B07",
+    "backbone": "mobilenetv3_large_100",
+    "seed": 0,
+    "best_epoch": 9,
+    "val_macro_f1": 0.7424614323191593,
+    "val_top1": 0.8097686375321337,
+    "val_ece": 0.04222307703012195,
+    "params_m": 4.213561,
+    "gmacs": 0.112083968,
+    "epoch_time_s": 20.110508501529694,
+    "latency_b1_ms": 3.46
+  }
+]

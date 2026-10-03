@@ -1,4 +1,124 @@
-# Lab Day 2 — Backbone, công thức huấn luyện và suy luận trên DeepWeeds
+# Báo Cáo Bài Làm Lab Day 2 — Deep Learning Advance
+
+**Học viên:** Phan Danh Đạt  
+**MSSV:** 02627  
+**Lớp / Track:** K4 — Track 4: Deep Learning Advance  
+**Môi trường thực nghiệm:** NVIDIA GeForce RTX 3060 12GB GDDR6 (CUDA 12.1), Windows 11  
+**Phiên bản môi trường:** Python 3.11.9, PyTorch 2.5.1+cu121, timm 1.0.15, pandas 2.2.3, scikit-learn 1.5.2, openpyxl 3.1.5  
+
+---
+
+## 🏆 Tóm Tắt Kết Quả & Điểm Tự Chấm RUBRIC (Phần I: 20 / 20 Điểm)
+
+Kết quả đánh giá chính thức qua công cụ `eval.py grade` độc lập (trung bình 3 seed `[0, 1, 2]` trên toàn bộ tập Test Fold 0 gồm 3.507 ảnh):
+
+| Mã | Tiêu chí đánh giá | Kết quả đạt được | Mốc đối chiếu / Ngưỡng | Điểm đạt | Điểm tối đa |
+|:---:|:---|:---:|:---:|:---:|:---:|
+| **I1** | **Top-1 Accuracy trên Test** | **97.53% ± 0.09%** | ≥ 95.7% (vượt mốc 100 epoch bài báo: 95.7%) | **7** | 7 |
+| **I2** | **Cải thiện Macro-F1 so với mốc** | **0.9686 ± 0.0013** | Mốc T00: 0.8069 ± 0.0149 (Δ = +0.1617 > s = 0.0149) | **5** | 5 |
+| **I3** | **Recall 2 lớp khó nhất** | **Chinee Apple: 94.1% ± 1.4%**<br>**Snake Weed: 95.3% ± 0.7%** | Mốc bài báo: 88.5%<br>Mốc bài báo: 88.8% | **4** | 4 |
+| **I4a**| **Hiệu chuẩn Temperature Scaling** | **ECE: 0.0821 → 0.0071 ± 0.0009** | ECE sau TS < ECE trước TS | **1** | 1 |
+| **I4b**| **Độ ổn định Val / Test** | Val: 0.9658 vs Test: 0.9686 | \|Val - Test\| = 0.0028 ≤ 0.02 | **1** | 1 |
+| **I5** | **Thời gian thực (Real-time Budget)**| **p95 = 5.78 ms** (batch 1, RTX 3060) | Ngân sách ≤ 100 ms (đo chuẩn sync + warmup) | **2** | 2 |
+| **Σ** | **Tổng điểm Phần I** | | | **20** | **20** |
+
+---
+
+## 📁 Cấu Trúc Sản Phẩm Nộp Bài
+
+```text
+K4-Track4-Day2-PhanDanhDat-02627-Deeplearning-Advance/
+├── README.md                      # Báo cáo tổng quan, môi trường, hướng dẫn tái lập & đề bài
+├── report.md                      # Báo cáo khoa học phân tích chuyên sâu đầy đủ các bước (tiếng Việt)
+├── results.xlsx                   # Bảng số liệu hoàn chỉnh 7 sheets (Backbones, Training, Inference, Final, PerClass, Latency, Summary)
+├── requirements.txt               # Danh sách thư viện và phiên bản chính xác đã chạy trên RTX 3060
+├── eval.py                        # Công cụ chấm điểm và đánh giá chuẩn mực của BTC (giữ nguyên gốc)
+├── code/                          # Toàn bộ mã nguồn hoàn chỉnh
+│   ├── dataset.py                 # Tải dữ liệu, kiểm tra tính toàn vẹn Fold 0 (S1-S6), transforms
+│   ├── model.py                   # Khởi tạo 7 kiến trúc, 3 parameter groups, phân rã GMACs/Params
+│   ├── losses.py                  # Label Smoothing, Focal Loss, Class-Weighted CE, Mixup/CutMix
+│   ├── train.py                   # Vòng lặp huấn luyện chuẩn, AMP, Cosine Warmup, EMA, checkpointing
+│   ├── inference.py              # TTA (lật/multi-scale), Temperature Scaling, Fused Conv-BN
+│   ├── benchmark.py              # Đo độ trễ chuẩn mực (warmup >= 20, cuda.synchronize, p50/p95/p99)
+│   ├── run_experiments.py        # Runner tự động chạy Bước 1, Bước 2, Bước 4
+│   ├── run_inference.py          # Runner đánh giá suy luận và đo độ trễ chuẩn mực Bước 3
+│   ├── build_results.py          # Tổng hợp 100% số liệu thực nghiệm vào results.xlsx
+│   ├── generate_report_charts.py # Tạo biểu đồ tổng hợp cho báo cáo (F1 vs Latency, Confusion Matrix, ECE)
+│   ├── eda_plot.py               # Biểu đồ phân bố 9 lớp dữ liệu Fold 0
+│   └── lab_day2.ipynb            # Notebook tương tác từng bước từ 0 đến 5
+├── curves/                        # 30 biểu đồ PNG chất lượng cao (26 tiến trình train/val + 4 biểu đồ phân tích)
+│   ├── B02_resnext50_32x4d.png ... B07_mobilenetv3_large_100.png
+│   ├── T00_resnet50.png ... T17_resnet50.png
+│   ├── F01_convnext_tiny.png
+│   ├── calibration_curve.png, confusion_matrix_test.png, eda_class_distribution.png
+│   └── f1_vs_latency_backbones.png, f1_vs_latency_inference.png
+└── predictions/                   # Toàn bộ 12 file CSV dự đoán trên Test và Val (F01, F01_uncal, T00 qua 3 seed)
+    ├── F01_seed{0,1,2}_test.csv, F01_uncal_seed{0,1,2}_test.csv, F01_seed{0,1,2}_val.csv
+    └── T00_seed{0,1,2}_test.csv, T00_seed{0,1,2}_val.csv
+```
+
+---
+
+## 🚀 Hướng Dẫn Tái Lập Toàn Bộ Kết Quả (Reproduction Guide)
+
+Mọi thí nghiệm được thiết kế để có thể tái lập 100% với các lệnh dưới đây (PowerShell trên Windows hoặc Bash trên Linux):
+
+### 1. Kích hoạt môi trường và thiết lập mã hóa UTF-8
+```powershell
+.\.venv\Scripts\Activate.ps1
+$env:PYTHONUTF8 = "1"
+$env:PYTHONIOENCODING = "utf-8"
+```
+
+### 2. Kiểm tra bộ dữ liệu và pipeline (Bước 0)
+```powershell
+python -c "from code.dataset import check_split; check_split('data/images', 'data/labels', fold=0)"
+python code/eda_plot.py
+```
+
+### 3. Chạy kiểm thử tự động toàn bộ Unit Tests (Không cần GPU)
+```powershell
+python -m unittest discover -s tests
+```
+
+### 4. Chạy Bước 1: So sánh 7 Backbone (B01 - B07)
+```powershell
+python code/run_experiments.py --step backbone
+```
+
+### 5. Chạy Bước 2: Khảo sát 16 cấu hình công thức huấn luyện (T01 - T17)
+```powershell
+python code/run_experiments.py --step training
+```
+
+### 6. Chạy Bước 3: Đánh giá phương pháp suy luận và đo độ trễ chuẩn mực (I00 - I08)
+```powershell
+python code/run_inference.py --exp-id T00 --backbone resnet50 --seed 0
+```
+
+### 7. Chạy Bước 4: Vòng chung kết 3 seed cho baseline T00 và model chung kết F01
+```powershell
+python code/run_experiments.py --step final
+```
+
+### 8. Xuất file kết quả tổng hợp `results.xlsx` và các biểu đồ phân tích
+```powershell
+python code/build_results.py
+python code/generate_report_charts.py
+```
+
+### 9. Chạy công cụ đánh giá chính thức `eval.py`
+```powershell
+# Chấm điểm chi tiết model F01
+python eval.py score --pred "predictions/F01_seed*_test.csv" --test-csv data/labels/test_subset0.csv --labels data/labels/labels.csv --tag F01 --out eval_out
+
+# Tự chấm điểm Phần I RUBRIC
+python eval.py grade --final "predictions/F01_seed*_test.csv" --baseline "predictions/T00_seed*_test.csv" --uncal "predictions/F01_uncal_seed*_test.csv" --final-val "predictions/F01_seed*_val.csv" --latency-p95-ms 5.78 --latency-method proper --test-csv data/labels/test_subset0.csv --labels data/labels/labels.csv
+```
+
+---
+
+# Đề Bài Gốc: Lab Day 2 — Backbone, công thức huấn luyện và suy luận trên DeepWeeds
 
 > Track 4 · Ngày 2 · *Tích chập, chuỗi, attention · backbone · huấn luyện · suy luận*
 > Bài lab này mở rộng **Lab #2** trong slide Day 2. Slide chỉ yêu cầu 1 backbone, 3 cách khởi tạo, có/không CutMix và TTA. Ở đây bạn làm đầy đủ: **≥ 5 backbone**, **nhiều công thức huấn luyện**, **nhiều cách suy luận**, rồi chọn cấu hình tốt nhất và báo cáo.
@@ -15,6 +135,7 @@ Repo gồm **hướng dẫn, tiêu chí chấm, bộ khung code (pseudo-code) v�
 | [`tests/`](tests) | Test của `eval.py` và của bộ khung (chạy được không cần GPU) |
 
 ---
+
 
 ## 1. Mục tiêu học tập
 
