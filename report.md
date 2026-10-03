@@ -377,6 +377,6 @@ Số liệu trung bình qua 3 seed của mô hình chung kết `F01` trên 3.507
 | I4b | Chênh macro-F1 val/test <=0.02| 1   |   1    | val 0.9658, test 0.9686, chênh 0.0028 <= 0.02             |
 | I5  | Cấu hình thời gian thực      |  2   |   2    | p95 = 5.8 ms (ngân sách 100 ms), đo đúng cách (sync+warmup)|
 ----------------------------------------------------------------------
-TỔNG ĐIỂM MỤC I ĐẠT ĐƯỢC: 20 / 20 (ĐIỂM TUYỆT ĐỐI)
+TỔNG ĐIỂM MỤC I ĐẠT ĐƯỢC: 20 / 20
 ======================================================================
 ```
