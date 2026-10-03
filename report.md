@@ -380,35 +380,3 @@ Số liệu trung bình qua 3 seed của mô hình chung kết `F01` trên 3.507
 TỔNG ĐIỂM MỤC I ĐẠT ĐƯỢC: 20 / 20 (ĐIỂM TUYỆT ĐỐI)
 ======================================================================
 ```
-
-### 9.3 Hướng dẫn Tái lập Kết quả (Reproduction Commands)
-
-Tất cả các lệnh thực thi đều có thể chạy độc lập từ thư mục gốc của repository:
-
-```powershell
-# 1. Kích hoạt môi trường ảo Python 3.11 đã cài đặt PyTorch CUDA
-.\.venv\Scripts\Activate.ps1
-$env:PYTHONUTF8 = "1"
-
-# 2. Chạy Bước 1: So sánh toàn bộ 7 Backbone
-python code/run_experiments.py --step backbone
-
-# 3. Chạy Bước 2: Khảo sát toàn bộ 16 thí nghiệm Công thức huấn luyện
-python code/run_experiments.py --step training
-
-# 4. Chạy Bước 3: Đánh giá phương pháp suy luận và đo độ trễ chuẩn mực
-python code/run_inference.py --exp-id T00 --backbone resnet50 --seed 0
-
-# 5. Chạy Bước 4: Vòng chung kết đa seed (T00 seeds 0,1,2 và F01 seeds 0,1,2)
-python code/run_experiments.py --step final
-
-# 6. Tạo file tổng hợp kết quả results.xlsx đầy đủ 7 sheets
-python code/build_results.py
-
-# 7. Tạo toàn bộ biểu đồ bổ trợ cho báo cáo
-python code/generate_report_charts.py
-
-# 8. Đánh giá và tự chấm điểm chính thức
-python eval.py score --pred "predictions/F01_seed*_test.csv" --test-csv data/labels/test_subset0.csv --labels data/labels/labels.csv --tag F01
-python eval.py grade --final "predictions/F01_seed*_test.csv" --baseline "predictions/T00_seed*_test.csv" --uncal "predictions/F01_uncal_seed*_test.csv" --final-val "predictions/F01_seed*_val.csv" --latency-p95-ms 5.78 --latency-method proper --test-csv data/labels/test_subset0.csv --labels data/labels/labels.csv
-```
